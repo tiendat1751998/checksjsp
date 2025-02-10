@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="jsp-jdbc-202401:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>jsp-jdbc-202401</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="jsp-jdbc-202401-0.0.1-SNAPSHOT.war">
+      <element id="artifact" artifact-name="jsp-jdbc-202401:war exploded" />
+    </root>
+  </artifact>
+</component>

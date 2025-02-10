@@ -1,0 +1,12 @@
+apiVersion: apps/v1
+kind: Pod
+metadata: 
+  name: app-pod
+  labels:
+    component: app
+spec:
+  containers: 
+    - name: client
+      image: dotiendat1751998/app-jsp
+      ports:
+        - containerPort: 8080 
