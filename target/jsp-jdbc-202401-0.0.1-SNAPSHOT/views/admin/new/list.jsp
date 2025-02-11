@@ -306,8 +306,8 @@
                         // Cập nhật giá trị vào form trước khi submit
                         $('#formSubmit').find('input[name="page"]').val(page);
                         $('#formSubmit').find('input[name="maxPageItem"]').val(limit);
-                        $('#formSubmit').find('input[name="sortName"]').val('id');
-                        $('#formSubmit').find('input[name="sortBy"]').val('desc');
+                        $('#formSubmit').find('input[name="sortName"]').val("title");
+                        $('#formSubmit').find('input[name="sortBy"]').val("desc");
                         $('#formSubmit').submit();
                     }
                 }
