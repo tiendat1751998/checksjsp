@@ -15,9 +15,9 @@ public class NewDAO extends AbstractDAO implements INewDAO {
     @Override
     public List<NewsModel> findAll(Pageble pageble) {
 //        String sql = "SELECT * FROM news  LIMIT  ?,?";
-        StringBuilder sql = new StringBuilder("SELECT * FROM news");
-        if (pageble.getSorter()!=null) {
-            sql.append("ORDER BY" +pageble.getSorter().getSortName()+ pageble.getSorter().getSortBy());
+        StringBuilder sql = new StringBuilder("SELECT * FROM news ");
+        if (pageble.getSorter().getSortName()!=null && pageble.getSorter().getSortBy()!=null) {
+            sql.append("ORDER BY " +pageble.getSorter().getSortName()+" "+ pageble.getSorter().getSortBy());
         }
         if (pageble.getOffSet() != null && pageble.getLimit() != null) {
             sql.append("  LIMIT  ?,?");

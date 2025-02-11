@@ -1,32 +1,31 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@include file="/common/taglib.jsp" %>
-<!DOCTYPE html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta charset="UTF-8">
-<title><dec:title default="Trang Chu" /></title>
+    <meta charset="UTF-8">
+    <title><dec:title default="Trang Chu"/></title>
 
-<link href="<c:url value='/template/css/bootstrap.min.css'/>"
-	rel="stylesheet" type="text/css" meta="all" />
-<link href="<c:url value='/template/css/styles.css'/>" rel="stylesheet"
-	type="text/css" meta="all" />
+    <link href="<c:url value='/template/css/bootstrap.min.css'/>"
+          rel="stylesheet" type="text/css" meta="all"/>
+    <link href="<c:url value='/template/css/styles.css'/>" rel="stylesheet"
+          type="text/css" meta="all"/>
 </head>
 <body>
-	<!-- header -->
-	<%@include file="/common/web/header.jsp"%>
+<!-- header -->
+<%@include file="/common/admin/header.jsp" %>
 
-	<div class="container">
-		<dec:body />
-	</div>
+<div class="container">
+    <dec:body/>
+</div>
 
 
-	<!-- footer -->
-	<%@include file="/common/web/footer.jsp"%>
+<!-- footer -->
+<%@include file="/common/admin/footer.jsp" %>
 
-	<link src="<c:url value='/template/js/jquery.min.js'/>"
-		type="text/javascript" />
-	     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<link src="<c:url value='/template/js/jquery.min.js'/>"
+      type="text/javascript"/>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
