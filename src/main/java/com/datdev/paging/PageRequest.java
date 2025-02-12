@@ -21,7 +21,7 @@ public class PageRequest implements Pageble {
     @Override
     public Integer getOffSet() {
         if (this.page != null && this.maxPageItem != null) {
-            Integer offset = (this.page - 1) * this.maxPageItem;
+            return (this.page - 1) * this.maxPageItem;
         }
         return null;
     }

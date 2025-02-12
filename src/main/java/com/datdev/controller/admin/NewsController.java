@@ -37,7 +37,7 @@ public class NewsController extends HttpServlet {
             newsModel.setMaxPageItem(5);
         }
 
-        Integer offset = (newsModel.getPage() - 1) * newsModel.getMaxPageItem();
+
         newsModel.setListResult(iNewsService.findAll(pageble));
         newsModel.setTotalItem(iNewsService.getTotalItem());
 

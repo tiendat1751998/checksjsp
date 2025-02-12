@@ -20,11 +20,11 @@ public class NewDAO extends AbstractDAO implements INewDAO {
             sql.append("ORDER BY " +pageble.getSorter().getSortName()+" "+ pageble.getSorter().getSortBy());
         }
         if (pageble.getOffSet() != null && pageble.getLimit() != null) {
-            sql.append("  LIMIT  ?,?");
-            return query(sql.toString(), new NewMapper(), pageble.getOffSet(), pageble.getLimit());
-        }else {
-            return query(sql.toString(),new NewMapper());
+            sql.append("  LIMIT  "+pageble.getOffSet()+ ","+pageble.getLimit()+"");
+
         }
+            return query(sql.toString(),new NewMapper());
+
     }
 
     @Override

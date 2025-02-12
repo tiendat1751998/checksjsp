@@ -12,57 +12,66 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.datdev.constant.SystemConstant;
 import com.datdev.model.NewsModel;
+import com.datdev.model.UserModel;
 import com.datdev.paging.PageRequest;
 import com.datdev.paging.Pageble;
 import com.datdev.service.INewsService;
+import com.datdev.service.IUserService;
 import com.datdev.sort.Sorter;
 import com.datdev.utils.FormUtils;
 
-@WebServlet(urlPatterns = {"/home-admin/"})
-public class HomeController  extends HttpServlet {
+@WebServlet(urlPatterns = {"/home-admin/", "/login"})
+public class HomeController extends HttpServlet {
 
-	/**
-	 *
-	 */
-	private static final long serialVersionUID = 7347462573004462778L;
-	@Inject
-	private INewsService iNewsService;
-	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    /**
+     *
+     */
+    private static final long serialVersionUID = 7347462573004462778L;
+    @Inject
+    private INewsService iNewsService;
+    @Inject
+    private IUserService iUserService;
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
 
-//		NewsModel newsModel = new NewsModel();
+        NewsModel newsModel = new NewsModel();
 ////		newsModel.setListResult(iNewsService.findAll());
-//		req.setAttribute(SystemConstant.MODEL,newsModel);
-		NewsModel newsModel = FormUtils.toModel(NewsModel.class, req);
+        String action = req.getParameter("action");
+        if (action != null && action.equals("login")) {
+            RequestDispatcher rd = req.getRequestDispatcher("/views/admin/login.jsp");
+            rd.forward(req, resp);
+        } else if (action != null && action.equals("logout")) {
 
-		Pageble pageble = new PageRequest(newsModel.getPage(),newsModel.getMaxPageItem(),new Sorter(newsModel.getSortName(),newsModel.getSortBy()));
+        } else {
+            req.setAttribute(SystemConstant.MODEL, newsModel);
+            RequestDispatcher rd = req.getRequestDispatcher("/views/admin/home.jsp");
+            rd.forward(req, resp);
+        }
 
-		// Kiểm tra giá trị mặc định
-		if (newsModel.getPage() == null) {
-			newsModel.setPage(1);
-		}
-		if (newsModel.getMaxPageItem() == null) {
-			newsModel.setMaxPageItem(5);
-		}
 
-		Integer offset = (newsModel.getPage() - 1) * newsModel.getMaxPageItem();
-		newsModel.setListResult(iNewsService.findAll(pageble));
-		newsModel.setTotalItem(iNewsService.getTotalItem());
+        doGet(req, resp);
+    }
 
-		// Đảm bảo totalPage >= 1
-		int totalPage = (int) Math.ceil((double) newsModel.getTotalItem() / newsModel.getMaxPageItem());
-		newsModel.setTotalPage(totalPage > 0 ? totalPage : 1);
-
-		req.setAttribute(SystemConstant.MODEL, newsModel);
-		RequestDispatcher rd = req.getRequestDispatcher("/views/admin/home.jsp");
-		rd.forward(req, resp);
-		doGet(req, resp);
-	}
-	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		super.doPost(req, resp);
-	}
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        // TODO Auto-generated method stub
+        String action = req.getParameter("action");
+        if (action != null && action.equals("login")) {
+            UserModel userModel = FormUtils.toModel(UserModel.class, req);
+            userModel = iUserService.findByUserNameAndPasswordAndStatus(userModel.getUserName(), userModel.getPassWord(), 1);
+            if (userModel != null) {
+                if (userModel.getRoleModel().getCode().equals("USER")) {
+                    resp.sendRedirect(req.getContextPath() + "/home-web/");
+                } else if (userModel.getRoleModel().getCode().equals("ADMIN")) {
+                    resp.sendRedirect(req.getContextPath() + "/home-admin/");
+                }
+            } else {
+                resp.sendRedirect(req.getContextPath() + "/login?action=login");
+            }
+        }
+        doPost(req, resp);
+    }
 
 }

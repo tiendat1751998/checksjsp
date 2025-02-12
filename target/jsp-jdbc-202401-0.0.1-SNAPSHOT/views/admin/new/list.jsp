@@ -295,7 +295,7 @@
 
             $('#pagination').twbsPagination({
                 totalPages: totalPages,
-                visiblePages: 10,
+                visiblePages: maxPageItem,
                 startPage: startPage,
                 first: '«',
                 prev: '‹',
@@ -305,7 +305,7 @@
                     if (startPage !== page) {
                         // Cập nhật giá trị vào form trước khi submit
                         $('#formSubmit').find('input[name="page"]').val(page);
-                        $('#formSubmit').find('input[name="maxPageItem"]').val(limit);
+                        $('#formSubmit').find('input[name="maxPageItem"]').val(maxPageItem);
                         $('#formSubmit').find('input[name="sortName"]').val("title");
                         $('#formSubmit').find('input[name="sortBy"]').val("desc");
                         $('#formSubmit').submit();
