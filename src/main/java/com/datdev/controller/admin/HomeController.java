@@ -1,6 +1,7 @@
 package com.datdev.controller.admin;
 
 import java.io.IOException;
+import java.util.ResourceBundle;
 
 import javax.inject.Inject;
 import javax.servlet.RequestDispatcher;
@@ -19,6 +20,7 @@ import com.datdev.service.INewsService;
 import com.datdev.service.IUserService;
 import com.datdev.sort.Sorter;
 import com.datdev.utils.FormUtils;
+import com.datdev.utils.SessionUtil;
 
 @WebServlet(urlPatterns = {"/home-admin/", "/login"})
 public class HomeController extends HttpServlet {
@@ -31,6 +33,7 @@ public class HomeController extends HttpServlet {
     private INewsService iNewsService;
     @Inject
     private IUserService iUserService;
+    ResourceBundle resourceBundle = ResourceBundle.getBundle("message");
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -43,9 +46,13 @@ public class HomeController extends HttpServlet {
             RequestDispatcher rd = req.getRequestDispatcher("/views/admin/login.jsp");
             rd.forward(req, resp);
         } else if (action != null && action.equals("logout")) {
+            SessionUtil.getInstance().removeValue(req,"USERMODEL");
+//            trả về trang web muốn về  ví dụ ở đây sau khi login sẽ trở về trang /home-admin/
+            resp.sendRedirect(req.getContextPath()+"/home-admin/");
 
         } else {
             req.setAttribute(SystemConstant.MODEL, newsModel);
+//            trả về view cho trang muốn chuyển đến ví dụ ở đây trả về view home
             RequestDispatcher rd = req.getRequestDispatcher("/views/admin/home.jsp");
             rd.forward(req, resp);
         }
@@ -59,16 +66,24 @@ public class HomeController extends HttpServlet {
         // TODO Auto-generated method stub
         String action = req.getParameter("action");
         if (action != null && action.equals("login")) {
+            String message =  req.getParameter("message");
+            String alert =  req .getParameter("alert");
+            if (message != null && alert != null) {
+                req.setAttribute("message",resourceBundle.getString(message));
+                req.setAttribute("alert",alert);
+            }
             UserModel userModel = FormUtils.toModel(UserModel.class, req);
             userModel = iUserService.findByUserNameAndPasswordAndStatus(userModel.getUserName(), userModel.getPassWord(), 1);
             if (userModel != null) {
+//                add session for usermoldel sau khi login thành công
+                SessionUtil.getInstance().putValue(req,"USERMODEL" , userModel);
                 if (userModel.getRoleModel().getCode().equals("USER")) {
                     resp.sendRedirect(req.getContextPath() + "/home-web/");
                 } else if (userModel.getRoleModel().getCode().equals("ADMIN")) {
                     resp.sendRedirect(req.getContextPath() + "/home-admin/");
                 }
             } else {
-                resp.sendRedirect(req.getContextPath() + "/login?action=login");
+                resp.sendRedirect(req.getContextPath() + "/login?action=login&&message=invalid-user&&alert=danger");
             }
         }
         doPost(req, resp);

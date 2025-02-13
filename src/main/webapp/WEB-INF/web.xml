@@ -26,6 +26,16 @@
         <filter-name>sitemesh</filter-name>
         <url-pattern>/admin*</url-pattern>
     </filter-mapping>
+<!--filter login authorization-->
+    <filter>
+        <filter-name>AuthorizationFilter</filter-name>
+        <filter-class>com.datdev.filter.Authorizationilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>AuthorizationFilter</filter-name>
+        <url-pattern>/admin*</url-pattern>
+    </filter-mapping>
 
 
 

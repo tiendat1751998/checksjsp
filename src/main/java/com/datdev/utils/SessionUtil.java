@@ -1,23 +1,26 @@
 package com.datdev.utils;
 
-public class SessionUtil {
-    private  static  SessionUtil sessionUtil = null;
+import javax.servlet.http.HttpServletRequest;
 
-    public static SessionUtil getInstance(){
-        if ()
+public class SessionUtil {
+    private static SessionUtil sessionUtil = null;
+
+    public static SessionUtil getInstance() {
+        if (sessionUtil == null) {
+            sessionUtil = new SessionUtil();
+        }
         return sessionUtil;
     }
 
-    public  void putValue()
-    {
-
+    public void putValue(HttpServletRequest request, String key, Object value) {
+        request.getSession().setAttribute(key, value);
     }
-    public  Object getValue()
-    {
-        return null;
-    }
-    public  void removeValue()
-    {
 
+    public Object getValue(HttpServletRequest request, String key) {
+        return request.getSession().getAttribute(key);
+    }
+
+    public void removeValue(HttpServletRequest request, String key) {
+        request.getSession().getAttribute(key);
     }
 }
