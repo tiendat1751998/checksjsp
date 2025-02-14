@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.datdev.service.impl.CategoryService;
 import com.datdev.service.impl.NewsService;
 
-@WebServlet(urlPatterns = {"/home-web/"})
+@WebServlet(urlPatterns = {"/web-home/"})
 public class HomeController  extends HttpServlet {
 
 	/**

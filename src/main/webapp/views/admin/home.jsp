@@ -176,8 +176,7 @@
                 <li><a href="<c:url value="/login?action=logout"/>"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
                 </c:if>
                 <c:if test="${empty USERMODEL}">
-                    <li><a href="<c:url value="/home-web/"/>"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
-                </c:if>
+                    <li><a href="<c:url value="/web-home/"/>"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
                 </c:if>
             </ul>
         </div>

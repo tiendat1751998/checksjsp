@@ -5,6 +5,8 @@
          version="3.0">
 
     <display-name>jsp-jdbc-2024</display-name>
+
+    <!-- Listener cho CDI (Context and Dependency Injection) -->
     <listener>
         <listener-class>org.jboss.weld.environment.servlet.Listener</listener-class>
     </listener>
@@ -12,31 +14,30 @@
     <session-config>
         <tracking-mode>COOKIE</tracking-mode>
     </session-config>
+
     <welcome-file-list>
-        <welcome-file>
-            index.jsp
-        </welcome-file>
+        <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
+
+    <!-- SiteMesh Filter -->
     <filter>
         <filter-name>sitemesh</filter-name>
         <filter-class>com.opensymphony.sitemesh.webapp.SiteMeshFilter</filter-class>
     </filter>
-
     <filter-mapping>
         <filter-name>sitemesh</filter-name>
-        <url-pattern>/admin*</url-pattern>
+        <url-pattern>/home-admin/*</url-pattern>
     </filter-mapping>
-<!--filter login authorization-->
+
+    <!-- Filter xác thực đăng nhập -->
     <filter>
         <filter-name>AuthorizationFilter</filter-name>
-        <filter-class>com.datdev.filter.Authorizationilter</filter-class>
+        <filter-class>com.datdev.filter.AuthorizationFilter</filter-class>
     </filter>
 
     <filter-mapping>
         <filter-name>AuthorizationFilter</filter-name>
-        <url-pattern>/admin*</url-pattern>
+        <url-pattern>/*</url-pattern>
     </filter-mapping>
-
-
 
 </web-app>

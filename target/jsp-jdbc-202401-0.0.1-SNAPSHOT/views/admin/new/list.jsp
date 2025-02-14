@@ -168,7 +168,7 @@
                 <ul class="nav flex-column">
                     <li><a href="<c:url value="/admin-new?page=1&maxPageItem=5&sortName=title&sortBy=desc"/>"><i class="
     fas fa-home"></i> Dashboard</a></li>
-                    <li><a href="#"><i class="fas fa-users"></i> Users</a></li>
+                    <li><a href="<c:url value="/login?action=login"/> "><i class="fas fa-users"></i>Login</a></li>
                     <li><a href="#"><i class="fas fa-chart-line"></i> Analytics</a></li>
                     <li><a href="#"><i class="fas fa-cog"></i> Settings</a></li>
                     <li><a href="#"><i class="fas fa-sign-out-alt"></i> Logout</a></li>

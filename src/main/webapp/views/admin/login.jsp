@@ -47,7 +47,7 @@
             <div class="card my-5">
 
 
-                <form class="card-body cardbody-color p-lg-5" id="Login" action="<c:url value='/login?action=login'/>">
+                <form class="card-body cardbody-color p-lg-5" id="Login" action="<c:url value='/login?action=login'/>" method="post" >
                     <c:if test="${not empty message}">
                         <div class="alert alert-${alert}" role="alert">
                                 ${message}
