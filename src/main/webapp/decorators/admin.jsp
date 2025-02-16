@@ -18,17 +18,14 @@
 
 </head>
 <body>
-<%@include file="/common/admin/header.jsp" %>
+<%--<%@include file="/common/admin/header.jsp" %>--%>
 <!-- header -->
-<%@include file="/common/admin/menu.jsp" %>
-
-<div class="container">
-    <dec:body/>
-</div>
+<%--<%@include file="/common/admin/menu.jsp" %>--%>
+<dec:body/>
 
 
 <!-- footer -->
-<%@include file="/common/admin/footer.jsp" %>
+<%--<%@include file="/common/admin/footer.jsp" %>--%>
 
 <script src="<c:url value='/template/js/scripts.js'/>"
         type="text/javascript"></script>

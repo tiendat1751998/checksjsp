@@ -15,9 +15,9 @@
 <!-- header -->
 <%@include file="/common/admin/header.jsp" %>
 
-<div class="container">
+
     <dec:body/>
-</div>
+
 
 
 <!-- footer -->

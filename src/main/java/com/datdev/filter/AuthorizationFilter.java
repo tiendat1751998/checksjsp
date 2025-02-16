@@ -1,7 +1,6 @@
 package com.datdev.filter;
 
 import com.datdev.constant.SystemConstant;
-import com.datdev.model.NewsModel;
 import com.datdev.model.UserModel;
 import com.datdev.utils.SessionUtil;
 
@@ -19,62 +18,77 @@ public class AuthorizationFilter implements Filter {
         this.context = filterConfig.getServletContext();
     }
 
-    //    @Override
+//    @Override
 //    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
 //        HttpServletRequest request = (HttpServletRequest) servletRequest;
 //        HttpServletResponse response = (HttpServletResponse) servletResponse;
 //        String url = request.getRequestURI();
-//        if (url.startsWith("/"))
-//        {
-//            UserModel model = (UserModel) SessionUtil.getInstance().getValue(request,"USERMODEL");
-//            if(model!=null && model.getRoleModel() != null)
-//            {
-//                if (model.getRoleModel().getCode().equals(SystemConstant.ADMIN))
-//                {
-//                    filterChain.doFilter(servletRequest,servletResponse);
+//        if (url.startsWith("/dat")) {
+//            UserModel model = (UserModel) SessionUtil.getInstance().getValue(request, "USERMODEL");
+//            if (model != null && model.getRoleModel() != null) {
+//                if (url.startsWith(request.getContextPath() + "/home-admin") && !SystemConstant.ADMIN.equals(model.getRoleModel().getCode())) {
+//                    response.sendRedirect(request.getContextPath() + "/login?action=login&message=not-permission&alert=danger");
+//                    return;
 //
-//                }else if (model.getRoleModel().getCode().equals(SystemConstant.USER))
-//                {
-//                    response.sendRedirect(request.getContextPath()+"/login?action=login&message=not-permission&alert=danger");
+//                } else if (model.getRoleModel().getCode().equals(SystemConstant.USER)) {
+//                    response.sendRedirect(request.getContextPath() + "/login?action=login&message=not-permission&alert=danger");
 //
 //                }
 //
-//            }else {
-//                response.sendRedirect(request.getContextPath()+"/login?action=login&message=not-login&alert=danger");
+//            } else {
+//                SessionUtil.getInstance().putValue(request, "REDIRECT_URL", url);
+//                response.sendRedirect(request.getContextPath() + "/login?action=login&message=not-login&alert=danger");
+//                return;
 //            }
 //
-//        }else {
-//            filterChain.doFilter(servletRequest,servletResponse);
+//        } else {
+//            filterChain.doFilter(servletRequest, servletResponse);
 //        }
 //    }
+
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         String url = request.getRequestURI();
+        String contextPath = request.getContextPath();
+        String loginPage = contextPath + "/login";
 
-        // Bỏ qua kiểm tra đăng nhập cho các trang này
-        if (url.endsWith("/login") || url.endsWith("/register") || url.contains("/assets/") || url.matches(".*\\.(css|js|png|jpg|jpeg|gif|svg|woff|woff2|ttf|otf|eot)$")) {
+        // 🔹 Whitelist các URL không cần xác thực
+        if (url.equals(loginPage)
+                || url.startsWith(loginPage + "?")
+                || url.endsWith("/register")
+                || url.contains("/api/")
+                || url.contains("/assets/")
+                || url.matches(".*\\.(css|js|png|jpg|jpeg|gif|svg|woff|woff2|ttf|otf|eot)(\\?.*)?$")) {
+            System.out.println("✅ Bypass filter for: " + url);
             filterChain.doFilter(servletRequest, servletResponse);
             return;
         }
 
-        // Kiểm tra nếu user đã đăng nhập
-        UserModel user = (UserModel) SessionUtil.getInstance().getValue(request, "USERMODEL");
-
-        // Lưu URL yêu cầu trước đó để sau khi đăng nhập sẽ quay lại
-        if (user == null) {
+        // 🔹 Kiểm tra đăng nhập
+        UserModel model = (UserModel) SessionUtil.getInstance().getValue(request, "USERMODEL");
+        if (model == null || model.getRoleModel() == null) {
             SessionUtil.getInstance().putValue(request, "REDIRECT_URL", url);
-            response.sendRedirect(request.getContextPath() + "/login?action=login&message=not-login&alert=danger");
-            return;
+            response.sendRedirect(loginPage + "?action=login&message=not-login&alert=danger");
+            return; // 🔴 Dừng ngay sau khi redirect
         }
 
-        // Chặn USER vào ADMIN
-        if (url.startsWith(request.getContextPath() + "/home-admin") && !SystemConstant.ADMIN.equals(user.getRoleModel().getCode())) {
-            response.sendRedirect(request.getContextPath() + "/login?action=login&message=not-permission&alert=danger");
-            return;
+        // 🔹 Kiểm tra phân quyền
+        if (url.startsWith(contextPath + "/home-admin/")) {
+            if (!SystemConstant.ADMIN.equals(model.getRoleModel().getCode())) {
+                response.sendRedirect(loginPage + "?action=login&message=not-permission&alert=danger");
+                return; // 🔴 Dừng ngay sau khi redirect
+            }
+        } else if (SystemConstant.USER.equals(model.getRoleModel().getCode())) {
+            response.sendRedirect(loginPage + "?action=login&message=not-permission&alert=danger");
+            return; // 🔴 Dừng ngay sau khi redirect
         }
+
+        // 🔹 Cho phép request tiếp tục
+        filterChain.doFilter(servletRequest, servletResponse);
     }
+
 
     @Override
     public void destroy() {

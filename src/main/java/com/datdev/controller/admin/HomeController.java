@@ -1,7 +1,12 @@
 package com.datdev.controller.admin;
 
-import java.io.IOException;
-import java.util.ResourceBundle;
+import com.datdev.constant.SystemConstant;
+import com.datdev.model.NewsModel;
+import com.datdev.model.UserModel;
+import com.datdev.service.INewsService;
+import com.datdev.service.IUserService;
+import com.datdev.utils.FormUtils;
+import com.datdev.utils.SessionUtil;
 
 import javax.inject.Inject;
 import javax.servlet.RequestDispatcher;
@@ -10,17 +15,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.datdev.constant.SystemConstant;
-import com.datdev.model.NewsModel;
-import com.datdev.model.UserModel;
-import com.datdev.paging.PageRequest;
-import com.datdev.paging.Pageble;
-import com.datdev.service.INewsService;
-import com.datdev.service.IUserService;
-import com.datdev.sort.Sorter;
-import com.datdev.utils.FormUtils;
-import com.datdev.utils.SessionUtil;
+import java.io.IOException;
+import java.util.ResourceBundle;
 
 @WebServlet(urlPatterns = {"/home-admin/", "/login"})
 public class HomeController extends HttpServlet {
@@ -34,61 +30,48 @@ public class HomeController extends HttpServlet {
     @Inject
     private IUserService iUserService;
     ResourceBundle resourceBundle = ResourceBundle.getBundle("message");
-
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-
-        NewsModel model = FormUtils.toModel(NewsModel.class,req);
-////		newsModel.setListResult(iNewsService.findAll());
+        NewsModel model = FormUtils.toModel(NewsModel.class, req);
         String action = req.getParameter("action");
-        if (action != null && action.equals("login")) {
+
+        if ("login".equals(action)) {
             String alert = req.getParameter("alert");
             String message = req.getParameter("message");
-            if (message!=null) {
-                req.setAttribute("message",resourceBundle.getString(message));
-                req.setAttribute("alert",alert);
+            if (message != null) {
+                req.setAttribute("message", resourceBundle.getString(message));
+                req.setAttribute("alert", alert);
             }
             RequestDispatcher rd = req.getRequestDispatcher("/views/admin/login.jsp");
             rd.forward(req, resp);
-        } else if (action != null && action.equals("logout")) {
-            SessionUtil.getInstance().removeValue(req,"USERMODEL");
-//            trả về trang web muốn về  ví dụ ở đây sau khi login sẽ trở về trang /home-admin/
-            resp.sendRedirect(req.getContextPath()+"/home-admin/");
-            return;
+        } else if ("logout".equals(action)) {
+            SessionUtil.getInstance().removeValue(req, "USERMODEL");
+            resp.sendRedirect(req.getContextPath() + "/home-admin/");
         } else {
             req.setAttribute(SystemConstant.MODEL, model);
-//            trả về view cho trang muốn chuyển đến ví dụ ở đây trả về view home
             RequestDispatcher rd = req.getRequestDispatcher("/views/admin/home.jsp");
             rd.forward(req, resp);
         }
-
-
-        doGet(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        // TODO Auto-generated method stub
         String action = req.getParameter("action");
-        if (action != null && action.equals("login")) {
+
+        if ("login".equals(action)) {
             UserModel model = FormUtils.toModel(UserModel.class, req);
             model = iUserService.findByUserNameAndPasswordAndStatus(model.getUserName(), model.getPassWord(), 1);
+
             if (model != null) {
-//                add session for usermoldel sau khi login thành công
-                SessionUtil.getInstance().putValue(req,"USERMODEL" , model);
-                if (model.getRoleModel().getCode().equals("USER")) {
+                SessionUtil.getInstance().putValue(req, "USERMODEL", model);
+                if ("USER".equals(model.getRoleModel().getCode())) {
                     resp.sendRedirect(req.getContextPath() + "/web-home/");
-                } else if (model.getRoleModel().getCode().equals("ADMIN")) {
+                } else if ("ADMIN".equals(model.getRoleModel().getCode())) {
                     resp.sendRedirect(req.getContextPath() + "/home-admin/");
                 }
-                return;
             } else {
                 resp.sendRedirect(req.getContextPath() + "/login?action=login&message=invalid-user&alert=danger");
-                return;
             }
         }
-        doPost(req, resp);
     }
-
 }
