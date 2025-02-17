@@ -16,8 +16,8 @@ import java.io.IOException;
 @WebServlet(urlPatterns = {"/api-web-new/"})
 public class NewApi extends HttpServlet {
     private final static long  serialVersionUID  = 1231245123514L;
-     @Inject
-     private INewsService iNewsService;
+    @Inject
+    private INewsService iNewsService;
 
     protected void  doPost(HttpServletRequest request , HttpServletResponse response)
             throws ServletException, IOException {
@@ -33,7 +33,6 @@ public class NewApi extends HttpServlet {
         System.out.println(newsModel);
 
         doPost(request,response);
-
     }
     protected void  doPut(HttpServletRequest request , HttpServletResponse response)
             throws ServletException, IOException {
@@ -54,36 +53,10 @@ public class NewApi extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         response.setContentType("application/json");
         NewsModel deleteNews = HttpUtils.Of(request.getReader()).toModel(NewsModel.class);
-       iNewsService.delete(deleteNews.getIds());
+        iNewsService.delete(deleteNews.getIds());
 
         objectMapper.writeValue(response.getOutputStream(),deleteNews);
         doDelete(request,response);
-    }
-    private String removeAccent(String s) {
-        String[][] map = {
-                {"à", "á", "ạ", "ả", "ã", "â", "ầ", "ấ", "ậ", "ẩ", "ẫ", "ă", "ằ", "ắ", "ặ", "ẳ", "ẵ"},
-                {"a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a"},
-                {"è", "é", "ẹ", "ẻ", "ẽ", "ê", "ề", "ế", "ệ", "ể", "ễ"},
-                {"e", "e", "e", "e", "e", "e", "e", "e", "e", "e", "e"},
-                {"ì", "í", "ị", "ỉ", "ĩ"},
-                {"i", "i", "i", "i", "i"},
-                {"ò", "ó", "ọ", "ỏ", "õ", "ô", "ồ", "ố", "ộ", "ổ", "ỗ", "ơ", "ờ", "ớ", "ợ", "ở", "ỡ"},
-                {"o", "o", "o", "o", "o", "o", "o", "o", "o", "o", "o", "o", "o", "o", "o", "o", "o"},
-                {"ù", "ú", "ụ", "ủ", "ũ", "ư", "ừ", "ứ", "ự", "ử", "ữ"},
-                {"u", "u", "u", "u", "u", "u", "u", "u", "u", "u", "u"},
-                {"ỳ", "ý", "ỵ", "ỷ", "ỹ"},
-                {"y", "y", "y", "y", "y"},
-                {"đ"},
-                {"d"}
-        };
-
-        for (int i = 0; i < map[0].length; i++) {
-            for (int j = 0; j < map[0][i].length(); j++) {
-                s = s.replace(map[0][i].charAt(j), map[1][i].charAt(0));
-            }
-        }
-
-        return s;
     }
 }
 

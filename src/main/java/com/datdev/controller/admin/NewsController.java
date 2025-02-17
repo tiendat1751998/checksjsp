@@ -26,28 +26,49 @@ public class NewsController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        String view="";
         NewsModel newsModel = FormUtils.toModel(NewsModel.class, req);
-        Pageble pageble = new PageRequest(newsModel.getPage(),newsModel.getMaxPageItem(),new Sorter(newsModel.getSortName(),newsModel.getSortBy()));
+        if (newsModel.getType().equals(SystemConstant.LIST))
+        {
+            Pageble pageble = new PageRequest(newsModel.getPage(),newsModel.getMaxPageItem(),new Sorter(newsModel.getSortName(),newsModel.getSortBy()));
 
-        // Kiểm tra giá trị mặc định
-        if (newsModel.getPage() == null) {
-            newsModel.setPage(1);
+            // Kiểm tra giá trị mặc định
+            if (newsModel.getPage() == null) {
+                newsModel.setPage(1);
+            }
+            if (newsModel.getMaxPageItem() == null) {
+                newsModel.setMaxPageItem(5);
+            }
+
+
+            newsModel.setListResult(iNewsService.findAll(pageble));
+            newsModel.setTotalItem(iNewsService.getTotalItem());
+
+            // Đảm bảo totalPage >= 1
+            int totalPage = (int) Math.ceil((double) newsModel.getTotalItem() / newsModel.getMaxPageItem());
+            newsModel.setTotalPage(totalPage > 0 ? totalPage : 1);
+
+            req.setAttribute(SystemConstant.MODEL, newsModel);
+
+            view ="/views/admin/new/list.jsp";
+
+        }else if (newsModel.getType().equals(SystemConstant.EDIT))
+        {
+            if (newsModel.getId() !=null)
+            {
+                newsModel=iNewsService.findOne(newsModel.getId());
+            }
+            else {
+
+            }
+            view ="/views/admin/new/edit.jsp";
+
+
         }
-        if (newsModel.getMaxPageItem() == null) {
-            newsModel.setMaxPageItem(5);
-        }
-
-
-        newsModel.setListResult(iNewsService.findAll(pageble));
-        newsModel.setTotalItem(iNewsService.getTotalItem());
-
-        // Đảm bảo totalPage >= 1
-        int totalPage = (int) Math.ceil((double) newsModel.getTotalItem() / newsModel.getMaxPageItem());
-        newsModel.setTotalPage(totalPage > 0 ? totalPage : 1);
-
-        req.setAttribute(SystemConstant.MODEL, newsModel);
-        RequestDispatcher requestDispatcher = req.getRequestDispatcher("/views/admin/new/list.jsp");
+        RequestDispatcher requestDispatcher = req.getRequestDispatcher(view);
         requestDispatcher.forward(req, resp);
+
     }
 
     @Override

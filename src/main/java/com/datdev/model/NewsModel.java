@@ -4,85 +4,85 @@ import java.sql.Timestamp;
 
 public class NewsModel extends AbstractModel<NewsModel> {
 
-	private String title;
-	private String thumbNail;
-	private String shortDescription;
-	private String content;
-	private Long categoryid;
+    private String title;
+    private String thumbNail;
+    private String shortDescription;
+    private String content;
+    private Long categoryid;
+    private String categoryCode;
 
 
+    public NewsModel() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
 
-	public NewsModel() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
-	public NewsModel(String title, String thumbnNail, String shortDescription, String content, Long categoryid) {
-		super();
-		this.title = title;
-		this.thumbNail = thumbnNail;
-		this.shortDescription = shortDescription;
-		this.content = content;
-		this.categoryid = categoryid;
-	}
-
+    public NewsModel(String title, String thumbnNail, String shortDescription, String content, Long categoryid) {
+        super();
+        this.title = title;
+        this.thumbNail = thumbnNail;
+        this.shortDescription = shortDescription;
+        this.content = content;
+        this.categoryid = categoryid;
+    }
 
 
-	public NewsModel(long id, Timestamp createDate, Timestamp modifireDate, String createBy, String modifireBy) {
-		super(id, createDate, modifireDate, createBy, modifireBy);
-		// TODO Auto-generated constructor stub
-	}
+    public NewsModel(long id, Timestamp createDate, Timestamp modifireDate, String createBy, String modifireBy) {
+        super(id, createDate, modifireDate, createBy, modifireBy);
+        // TODO Auto-generated constructor stub
+    }
 
-	public String getTitle() {
-		return title;
-	}
+    public String getTitle() {
+        return title;
+    }
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-	public String getThumbNail() {
-		return thumbNail;
-	}
+    public String getThumbNail() {
+        return thumbNail;
+    }
 
-	public void setThumbNail(String thumbNail) {
-		this.thumbNail = thumbNail;
-	}
+    public void setThumbNail(String thumbNail) {
+        this.thumbNail = thumbNail;
+    }
 
-	public String getShortDescription() {
-		return shortDescription;
-	}
+    public String getShortDescription() {
+        return shortDescription;
+    }
 
-	public void setShortDescription(String shortDescription) {
-		this.shortDescription = shortDescription;
-	}
+    public void setShortDescription(String shortDescription) {
+        this.shortDescription = shortDescription;
+    }
 
-	public String getContent() {
-		return content;
-	}
+    public String getContent() {
+        return content;
+    }
 
-	public void setContent(String content) {
-		this.content = content;
-	}
+    public void setContent(String content) {
+        this.content = content;
+    }
 
-	public Long getCategoryid() {
-		return categoryid;
-	}
+    public Long getCategoryid() {
+        return categoryid;
+    }
 
-	public void setCategoryid(Long categoryid) {
-		this.categoryid = categoryid;
-	}
+    public void setCategoryid(Long categoryid) {
+        this.categoryid = categoryid;
+    }
 
-	public void setPassWord(String string) {
-		// TODO Auto-generated method stub
+    public void setPassWord(String string) {
+        // TODO Auto-generated method stub
 
-	}
-
-
+    }
 
 
+    public String getCategoryCode() {
+        return categoryCode;
+    }
 
-
-
-
+    public void setCategoryCode(String categoryCode) {
+        this.categoryCode = categoryCode;
+    }
 }

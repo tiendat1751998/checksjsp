@@ -83,6 +83,10 @@
                             <div class="card-header">
                                 <h5 class="card-title">Recent Orders</h5>
                             </div>
+                            <div class="d-grid gap-2 d-md-block">
+                                <a class="btn btn-primary"  href="<c:url value="/admin-new?type=edit"/>" role="button" title="add">add new</a>
+                                <a class="btn btn-primary"  href="<c:url value="/admin-new?type=delete"/>" role="button" title="add">delete/a>
+                            </div>
                             <div class="card-body">
                                 <table class="table table-striped table-hover">
                                     <thead>
@@ -101,7 +105,13 @@
                                             <td>${item.shortDescription}</td>
                                             <td>${item.thumbNail}</td>
                                             <td>2023-10-01</td>
-                                            <td><span class="badge bg-success">Completed</span></td>
+                                            <td>
+                                                <c:url var="editURL" value="/admin-new">
+                                                    <c:param name="type" value="edit"/>
+                                                    <c:param name="id" value="${item.id}"/>
+                                                </c:url>
+                                                <a class="btn btn-warning"  href="${editURL}" role="button" title="add">edit</a>
+                                            </td>
                                         </tr>
                                     </c:forEach>
                                     </tbody>

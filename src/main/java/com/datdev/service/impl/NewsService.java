@@ -28,7 +28,7 @@ public class NewsService implements INewsService {
     @Override
     public NewsModel save(NewsModel newsModel) {
         newsModel.setCreateDate(new Timestamp(System.currentTimeMillis()));
-        newsModel.setCreateBy("");
+
 
         Long newid =  iNewDAO.save(newsModel);
         return iNewDAO.findOne(newid);
@@ -56,5 +56,10 @@ public class NewsService implements INewsService {
     @Override
     public int getTotalItem() {
         return iNewDAO.getTotalItem();
+    }
+
+    @Override
+    public NewsModel findOne(long id) {
+        return iNewDAO.findOne(id);
     }
 }

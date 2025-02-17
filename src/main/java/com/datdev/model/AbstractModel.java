@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class AbstractModel<T> {
-    private long id;
+    private Long  id;
     private Timestamp createDate;
     private Timestamp modifireDate;
     private String createBy;
@@ -18,11 +18,12 @@ public abstract class AbstractModel<T> {
     private Integer totalItem;
     private String sortName;
     private String sortBy;
+    private String type;
 
 
     private List<T> listResult = new ArrayList<T>();
 
-    public AbstractModel(long id, Timestamp createDate, Timestamp modifireDate, String createBy, String modifireBy) {
+    public AbstractModel(Long id, Timestamp createDate, Timestamp modifireDate, String createBy, String modifireBy) {
         super();
         this.id = id;
         this.createDate = createDate;
@@ -36,7 +37,7 @@ public abstract class AbstractModel<T> {
         // TODO Auto-generated constructor stub
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -138,5 +139,13 @@ public abstract class AbstractModel<T> {
 
     public void setSortBy(String sortBy) {
         this.sortBy = sortBy;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

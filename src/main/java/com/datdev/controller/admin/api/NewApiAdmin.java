@@ -1,8 +1,10 @@
 package com.datdev.controller.admin.api;
 
 import com.datdev.model.NewsModel;
+import com.datdev.model.UserModel;
 import com.datdev.service.INewsService;
 import com.datdev.utils.HttpUtils;
+import com.datdev.utils.SessionUtil;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import javax.inject.Inject;
@@ -26,6 +28,8 @@ public class NewApiAdmin extends HttpServlet {
         response.setContentType("application/json");
 //        conver json sang new model
         NewsModel newsModel = HttpUtils.Of(request.getReader()).toModel(NewsModel.class);
+//        UserModel userModel = ((UserModel) SessionUtil.getInstance().getValue(request,"USERMODEL")).getUserName();
+        newsModel.setCreateBy( ((UserModel) SessionUtil.getInstance().getValue(request,"USERMODEL")).getUserName());
         newsModel = iNewsService.save(newsModel);
 //         convert data sang json
         objectMapper.writeValue(response.getOutputStream(),newsModel);

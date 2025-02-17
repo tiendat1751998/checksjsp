@@ -9,9 +9,10 @@
 <html>
 <head>
     <title>Title</title>
+    <%@include file="/common/admin/menu.jsp"%>
 </head>
 <body>
-
+<%@include file="/common/admin/menu.jsp"%>
 <h2>Edit Your Information</h2>
 
 <form id="editForm">
@@ -26,7 +27,7 @@
 
     <button type="submit">Save Changes</button>
 </form>
-
+<%@include file="/common/admin/footer.jsp"%>
 <script>
     document.getElementById("editForm").addEventListener("submit", function (event) {
         event.preventDefault();
