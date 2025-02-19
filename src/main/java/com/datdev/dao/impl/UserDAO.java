@@ -1,9 +1,7 @@
 package com.datdev.dao.impl;
 
 import com.datdev.dao.IUserDao;
-import com.datdev.mapper.NewMapper;
 import com.datdev.mapper.UserMapper;
-import com.datdev.model.NewsModel;
 import com.datdev.model.UserModel;
 
 import java.util.List;

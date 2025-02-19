@@ -1,7 +1,5 @@
 package com.datdev.model;
 
-import java.sql.Date;
-
 public class CategoryModel  extends AbstractModel<CategoryModel>{
 	private String name;
 	private String code;

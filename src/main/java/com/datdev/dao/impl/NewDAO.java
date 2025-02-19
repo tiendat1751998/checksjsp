@@ -5,7 +5,6 @@ import com.datdev.mapper.NewMapper;
 import com.datdev.model.NewsModel;
 import com.datdev.paging.Pageble;
 
-import java.sql.*;
 import java.util.List;
 
 public class NewDAO extends AbstractDAO implements INewDAO {

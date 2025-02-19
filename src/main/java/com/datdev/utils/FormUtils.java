@@ -1,11 +1,8 @@
 package com.datdev.utils;
 
-import com.datdev.model.NewsModel;
 import org.apache.commons.beanutils.BeanUtils;
-import org.codehaus.jackson.map.ObjectMapper;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
 public class FormUtils {
