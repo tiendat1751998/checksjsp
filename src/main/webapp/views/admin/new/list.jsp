@@ -83,10 +83,6 @@
                             <div class="card-header">
                                 <h5 class="card-title">Recent Orders</h5>
                             </div>
-                            <div class="d-grid gap-2 d-md-block">
-                                <a class="btn btn-primary"  href="<c:url value="/admin-new?type=edit"/>" role="button" title="add">add new</a>
-                                <a class="btn btn-primary"  href="<c:url value="/admin-new?type=delete"/>" role="button" title="add">delete/a>
-                            </div>
                             <div class="card-body">
                                 <table class="table table-striped table-hover">
                                     <thead>
@@ -95,7 +91,7 @@
                                         <th>mô tả ngắn</th>
                                         <th>Product</th>
                                         <th>Date</th>
-                                        <th>Status</th>
+                                        <th>CRUD</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -105,12 +101,21 @@
                                             <td>${item.shortDescription}</td>
                                             <td>${item.thumbNail}</td>
                                             <td>2023-10-01</td>
-                                            <td>
+                                            <td><c:url var="addURL" value="/admin-new">
+                                                <c:param name="type" value="add"/>
+                                            </c:url>
+
+                                                <a class="btn btn btn-success"  href="${addURL}" role="button" title="add"><i class="fas fa-add"></i></a>
                                                 <c:url var="editURL" value="/admin-new">
-                                                    <c:param name="type" value="edit"/>
+                                                    <c:param name="type" value="EDIT"/>
                                                     <c:param name="id" value="${item.id}"/>
                                                 </c:url>
-                                                <a class="btn btn-warning"  href="${editURL}" role="button" title="add">edit</a>
+                                                <a class="btn btn-warning"  href="${editURL}" role="button" title="edit"><i class="fas fa-edit"></i></a>
+                                                <c:url var="editURL" value="/admin-new">
+                                                    <c:param name="type" value="delete"/>
+                                                    <c:param name="id" value="${item.id}"/>
+                                                </c:url>
+                                                <a class="btn btn-danger"  href="<c:url value="/admin-new?type=delete"/>" role="button" title="remove"><i class="fas fa-remove"></i></a>
                                             </td>
                                         </tr>
                                     </c:forEach>
@@ -123,6 +128,8 @@
                                 <input type="hidden" name="maxPageItem" value="${model.maxPageItem}"/>
                                 <input type="hidden" name="sortName" value="${model.sortName}"/>
                                 <input type="hidden" name="sortBy" value="${model.sortBy}"/>
+                                <input type="hidden" name="type" value="" id="type"/>
+                                <input type="hidden" name="id" value="" id="id"/>
                             </div>
                         </div>
                     </div>
@@ -131,6 +138,7 @@
         </div>
     </div>
 </div>
+
 <!-- Bootstrap JS and dependencies -->
 <%@include file="/common/admin/footer.jsp" %>
 
@@ -139,6 +147,7 @@
         var totalPages = ${model.totalPage};
         var startPage = ${model.page};
         var maxPageItem = ${model.maxPageItem};
+        var id = ${model.id};
         var limit = 5;
 
         $('#pagination').twbsPagination({
@@ -156,6 +165,8 @@
                     $('#formSubmit').find('input[name="maxPageItem"]').val(maxPageItem);
                     $('#formSubmit').find('input[name="sortName"]').val("title");
                     $('#formSubmit').find('input[name="sortBy"]').val("desc");
+                    $('#formSubmit').find('input[name="type"]').val("LIST");
+                    $('#formSubmit').find('input[name="id"]').val(id);
                     $('#formSubmit').submit();
                 }
             }

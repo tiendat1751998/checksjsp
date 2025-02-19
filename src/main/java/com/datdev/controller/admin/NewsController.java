@@ -4,6 +4,7 @@ import com.datdev.constant.SystemConstant;
 import com.datdev.model.NewsModel;
 import com.datdev.paging.PageRequest;
 import com.datdev.paging.Pageble;
+import com.datdev.service.ICategoryService;
 import com.datdev.service.INewsService;
 import com.datdev.sort.Sorter;
 import com.datdev.utils.FormUtils;
@@ -23,15 +24,17 @@ public class NewsController extends HttpServlet {
 
     @Inject
     private INewsService iNewsService;
+    @Inject
+    private ICategoryService categoryService;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        String view="";
+        String view = "";
         NewsModel newsModel = FormUtils.toModel(NewsModel.class, req);
-        if (newsModel.getType().equals(SystemConstant.LIST))
-        {
-            Pageble pageble = new PageRequest(newsModel.getPage(),newsModel.getMaxPageItem(),new Sorter(newsModel.getSortName(),newsModel.getSortBy()));
+
+        if (newsModel.getType().equals(SystemConstant.LIST)) {
+            Pageble pageble = new PageRequest(newsModel.getPage(), newsModel.getMaxPageItem(), new Sorter(newsModel.getSortName(), newsModel.getSortBy()));
 
             // Kiểm tra giá trị mặc định
             if (newsModel.getPage() == null) {
@@ -41,31 +44,44 @@ public class NewsController extends HttpServlet {
                 newsModel.setMaxPageItem(5);
             }
 
-
             newsModel.setListResult(iNewsService.findAll(pageble));
             newsModel.setTotalItem(iNewsService.getTotalItem());
-
+            System.out.println(newsModel.toString());
             // Đảm bảo totalPage >= 1
             int totalPage = (int) Math.ceil((double) newsModel.getTotalItem() / newsModel.getMaxPageItem());
             newsModel.setTotalPage(totalPage > 0 ? totalPage : 1);
 
             req.setAttribute(SystemConstant.MODEL, newsModel);
+            view = "/views/admin/new/list.jsp";
 
-            view ="/views/admin/new/list.jsp";
-
-        }else if (newsModel.getType().equals(SystemConstant.EDIT))
-        {
-            if (newsModel.getId() !=null)
-            {
-                newsModel=iNewsService.findOne(newsModel.getId());
-            }
-            else {
+        } else if (newsModel.getType().equals(SystemConstant.EDIT)) {
+            if (newsModel.getId() != null) {
+                // Make sure this returns a non-null object
+                newsModel = iNewsService.findOne(newsModel.getId());
 
             }
-            view ="/views/admin/new/edit.jsp";
+            req.setAttribute(SystemConstant.MODEL, newsModel);
+            req.setAttribute("categories", categoryService.findAll());
+            view = "/views/admin/new/edit.jsp";
 
-
+        } else if (newsModel.getType().equals(SystemConstant.DELETE)) {
+            String[] ids = req.getParameterValues("ids"); // Get the array of IDs
+            if (ids != null && ids.length > 0) {
+                long[] longIds = new long[ids.length];
+                for (int i = 0; i < ids.length; i++) {
+                    longIds[i] = Long.parseLong(ids[i]); // Convert to long
+                }
+                iNewsService.delete(longIds); // Call the delete method
+                resp.setStatus(HttpServletResponse.SC_OK);
+                resp.getWriter().write("{\"status\":\"success\"}");
+            } else {
+                resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                resp.getWriter().write("{\"status\":\"error\",\"message\":\"No IDs provided\"}");
+            }
+            return;
         }
+
+        req.setAttribute(SystemConstant.MODEL, newsModel);
         RequestDispatcher requestDispatcher = req.getRequestDispatcher(view);
         requestDispatcher.forward(req, resp);
 
