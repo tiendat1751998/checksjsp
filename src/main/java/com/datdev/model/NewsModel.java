@@ -8,7 +8,7 @@ public class NewsModel extends AbstractModel<NewsModel> {
     private String thumbNail;
     private String shortDescription;
     private String content;
-    private Long categoryid;
+    private Long categoryId;
     private String categoryCode;
 
 
@@ -17,13 +17,13 @@ public class NewsModel extends AbstractModel<NewsModel> {
         // TODO Auto-generated constructor stub
     }
 
-    public NewsModel(String title, String thumbnNail, String shortDescription, String content, Long categoryid) {
+    public NewsModel(String title, String thumbnNail, String shortDescription, String content, Long categoryId) {
         super();
         this.title = title;
         this.thumbNail = thumbnNail;
         this.shortDescription = shortDescription;
         this.content = content;
-        this.categoryid = categoryid;
+        this.categoryId = categoryId;
     }
 
 
@@ -65,11 +65,11 @@ public class NewsModel extends AbstractModel<NewsModel> {
     }
 
     public Long getCategoryid() {
-        return categoryid;
+        return categoryId;
     }
 
     public void setCategoryid(Long categoryid) {
-        this.categoryid = categoryid;
+        this.categoryId = categoryid;
     }
 
     public void setPassWord(String string) {

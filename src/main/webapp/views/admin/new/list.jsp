@@ -105,17 +105,21 @@
                                                 <c:param name="type" value="add"/>
                                             </c:url>
 
-                                                <a class="btn btn btn-success"  href="${addURL}" role="button" title="add"><i class="fas fa-add"></i></a>
+                                                <a class="btn btn btn-success" href="${addURL}" role="button"
+                                                   title="add"><i class="fas fa-add"></i></a>
                                                 <c:url var="editURL" value="/admin-new">
                                                     <c:param name="type" value="EDIT"/>
                                                     <c:param name="id" value="${item.id}"/>
                                                 </c:url>
-                                                <a class="btn btn-warning"  href="${editURL}" role="button" title="edit"><i class="fas fa-edit"></i></a>
-                                                <c:url var="editURL" value="/admin-new">
+                                                <a class="btn btn-warning" href="${editURL}" role="button" title="edit">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                                <c:url var="deleteURL" value="/admin-new">
                                                     <c:param name="type" value="delete"/>
                                                     <c:param name="id" value="${item.id}"/>
                                                 </c:url>
-                                                <a class="btn btn-danger"  href="<c:url value="/admin-new?type=delete"/>" role="button" title="remove"><i class="fas fa-remove"></i></a>
+                                                <a class="btn btn-danger" href="${deleteURL}" role="button"
+                                                   title="remove"><i class="fas fa-remove"></i></a>
                                             </td>
                                         </tr>
                                     </c:forEach>

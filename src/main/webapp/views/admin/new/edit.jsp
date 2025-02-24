@@ -65,10 +65,13 @@
                                 <c:if test="${item.code == model.categoryCode}">selected</c:if>>${item.name}</option>
                     </c:forEach>
                 </select>
-                <input type="text" id="title" name="title" value="${model.title}">
+                <input type="hidden" name="id" value="${model.id}">
+                <input type="text" id="title" name="title" value="${model != null ? model.title : ''}">
+
                 <input type="text" id="shortDescription" name="shortDescription" value="${model.shortDescription}">
                 <input type="text" id="content" name="content" value="${model.content}">
                 <input type="text" id="thumbNail" name="thumbNail" value="${model.thumbNail}">
+
                 <button type="submit" class="btn btn-save">Save</button>
             </form>
         </div>
@@ -98,6 +101,7 @@
 
         // Add type=EDIT to specify the type of request for the backend
         formData.append("type", "EDIT");
+        formData.append("id", document.getElementById("id").value);
 
         // Handle the response from the server
         xhr.onload = function () {

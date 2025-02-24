@@ -1,6 +1,7 @@
 package com.datdev.controller.admin;
 
 import com.datdev.constant.SystemConstant;
+import com.datdev.model.CategoryModel;
 import com.datdev.model.NewsModel;
 import com.datdev.paging.PageRequest;
 import com.datdev.paging.Pageble;
@@ -32,6 +33,7 @@ public class NewsController extends HttpServlet {
 
         String view = "";
         NewsModel newsModel = FormUtils.toModel(NewsModel.class, req);
+        CategoryModel category = FormUtils.toModel(CategoryModel.class, req);
 
         if (newsModel.getType().equals(SystemConstant.LIST)) {
             Pageble pageble = new PageRequest(newsModel.getPage(), newsModel.getMaxPageItem(), new Sorter(newsModel.getSortName(), newsModel.getSortBy()));
@@ -51,10 +53,16 @@ public class NewsController extends HttpServlet {
             int totalPage = (int) Math.ceil((double) newsModel.getTotalItem() / newsModel.getMaxPageItem());
             newsModel.setTotalPage(totalPage > 0 ? totalPage : 1);
 
+            System.out.println("Type nhận được: " + newsModel.getType());
+            System.out.println("ID nhận được: " + newsModel.getId());
+
             req.setAttribute(SystemConstant.MODEL, newsModel);
             view = "/views/admin/new/list.jsp";
 
         } else if (newsModel.getType().equals(SystemConstant.EDIT)) {
+            newsModel.setCategoryid(Long.parseLong(req.getParameter("")));
+
+            newsModel.setId(Long.parseLong(req.getParameter("id")));
             if (newsModel.getId() != null) {
                 // Make sure this returns a non-null object
                 newsModel = iNewsService.findOne(newsModel.getId());
@@ -89,6 +97,19 @@ public class NewsController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        doGet(req, resp);
+        req.setCharacterEncoding("UTF-8");
+        NewsModel newsModel = FormUtils.toModel(NewsModel.class, req);
+
+        if (SystemConstant.EDIT.equals(newsModel.getType())) {
+            iNewsService.update(newsModel);
+            resp.sendRedirect(req.getContextPath() + "/admin-new?type=LIST");
+        } else if (SystemConstant.DELETE.equals(newsModel.getType())) {
+            long id = newsModel.getId();
+            iNewsService.delete(new long[]{id});
+            resp.sendRedirect(req.getContextPath() + "/admin-new?type=LIST");
+        } else {
+            iNewsService.save(newsModel);
+            resp.sendRedirect(req.getContextPath() + "/admin-new?type=LIST");
+        }
     }
 }
