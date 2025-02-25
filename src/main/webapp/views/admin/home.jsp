@@ -126,9 +126,13 @@
 
 <script>
     $(document).ready(function () {
-        var totalPages = ${model.totalPage};
-        var startPage = ${model.page};
-        var maxPageItem = ${model.maxPageItem};
+        <%--var totalPages = ${model.totalPage} ;--%>
+        <%--var startPage = ${model.page} ;--%>
+        <%--var maxPageItem = ${model.maxPageItem} ;--%>
+        var totalPages = parseInt('${model.totalPage}' || '1', 10);
+        var startPage = parseInt('${model.page}' || '1', 10);
+        var maxPageItem = parseInt('${model.maxPageItem}' || '5', 10);
+
         var limit = 5;
 
         $('#pagination').twbsPagination({

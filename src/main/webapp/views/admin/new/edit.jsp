@@ -61,13 +61,13 @@
                 <select id="categoryCode" name="categoryCode">
                     <option value="">Select Category</option>
                     <c:forEach var="item" items="${categories}">
-                        <option value="${item.code}"
-                                <c:if test="${item.code == model.categoryCode}">selected</c:if>>${item.name}</option>
+                        <option value="${item.code}" ${item.code == model.categoryCode ? 'selected="selected"' : ''}>
+                                ${item.name}
+                        </option>
                     </c:forEach>
                 </select>
-                <input type="hidden" name="id" value="${model.id}">
+                <input type="hidden" id="id" name="id" value="${model.id}">
                 <input type="text" id="title" name="title" value="${model != null ? model.title : ''}">
-
                 <input type="text" id="shortDescription" name="shortDescription" value="${model.shortDescription}">
                 <input type="text" id="content" name="content" value="${model.content}">
                 <input type="text" id="thumbNail" name="thumbNail" value="${model.thumbNail}">
@@ -81,6 +81,11 @@
 <script>
     document.getElementById("editForm").addEventListener("submit", function (event) {
         event.preventDefault(); // Prevent the default form submission
+        var id = document.getElementById("id").value;
+        if (!id) {
+            alert("Error: Missing ID for the post.");
+            return;
+        }
 
         // Gather the form data
         var formData = new FormData(this);
@@ -95,13 +100,13 @@
 
         // Send data via AJAX
         var xhr = new XMLHttpRequest();
-        xhr.open("POST", "<c:url value='/admin-new'/>", true); // Replace with correct URL for edit action
+        xhr.open("POST", "<c:url value='/admin-new?type=EDIT'/>", true); // Replace with correct URL for edit action
 
         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
         // Add type=EDIT to specify the type of request for the backend
         formData.append("type", "EDIT");
-        formData.append("id", document.getElementById("id").value);
+        formData.append("id",id);
 
         // Handle the response from the server
         xhr.onload = function () {

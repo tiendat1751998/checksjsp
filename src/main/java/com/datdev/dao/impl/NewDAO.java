@@ -29,7 +29,7 @@ public class NewDAO extends AbstractDAO implements INewDAO {
     @Override
     public List<NewsModel> findByCategoryId(Long categoryId) {
 
-        String sql = "SELECT * FORM NEWS where categoryid=?";
+        String sql = "SELECT * FROM news where categoryid=?";
         return query(sql, new NewMapper(), categoryId);
 
     }

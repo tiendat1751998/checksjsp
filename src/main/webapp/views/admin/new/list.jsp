@@ -151,7 +151,7 @@
         var totalPages = ${model.totalPage};
         var startPage = ${model.page};
         var maxPageItem = ${model.maxPageItem};
-        var id = ${model.id};
+        <%--var id = ${model.id};--%>
         var limit = 5;
 
         $('#pagination').twbsPagination({
@@ -170,7 +170,7 @@
                     $('#formSubmit').find('input[name="sortName"]').val("title");
                     $('#formSubmit').find('input[name="sortBy"]').val("desc");
                     $('#formSubmit').find('input[name="type"]').val("LIST");
-                    $('#formSubmit').find('input[name="id"]').val(id);
+                    // $('#formSubmit').find('input[name="id"]').val(id);
                     $('#formSubmit').submit();
                 }
             }

@@ -30,6 +30,6 @@ public class CategoryService implements ICategoryService {
         CategoryModel categoryModel = categoryDAO.findOne(newsModel.getCategoryid());
         newsModel.setCategoryCode(categoryModel.getCode());
 
-        return categoryDAO.findOne(id);
+        return categoryModel;
     }
 }

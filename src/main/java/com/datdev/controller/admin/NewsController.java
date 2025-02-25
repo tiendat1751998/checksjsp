@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 @WebServlet(urlPatterns = "/admin-new")
 public class NewsController extends HttpServlet {
@@ -50,17 +51,18 @@ public class NewsController extends HttpServlet {
             newsModel.setTotalItem(iNewsService.getTotalItem());
             System.out.println(newsModel.toString());
             // Đảm bảo totalPage >= 1
-            int totalPage = (int) Math.ceil((double) newsModel.getTotalItem() / newsModel.getMaxPageItem());
-            newsModel.setTotalPage(totalPage > 0 ? totalPage : 1);
-
-            System.out.println("Type nhận được: " + newsModel.getType());
-            System.out.println("ID nhận được: " + newsModel.getId());
+//            int totalPage = (int) Math.ceil((double) newsModel.getTotalItem() / newsModel.getMaxPageItem());
+//            newsModel.setTotalPage(totalPage > 0 ? totalPage : 1);
+            int totalItem = iNewsService.getTotalItem();
+            int totalPage = (int) Math.ceil((double) totalItem / newsModel.getMaxPageItem());
+            newsModel.setTotalItem(totalItem);
+            newsModel.setTotalPage(Math.max(totalPage, 1));
 
             req.setAttribute(SystemConstant.MODEL, newsModel);
             view = "/views/admin/new/list.jsp";
 
         } else if (newsModel.getType().equals(SystemConstant.EDIT)) {
-            newsModel.setCategoryid(Long.parseLong(req.getParameter("")));
+//            newsModel.setCategoryid(Long.parseLong(req.getParameter("")));
 
             newsModel.setId(Long.parseLong(req.getParameter("id")));
             if (newsModel.getId() != null) {
@@ -69,7 +71,10 @@ public class NewsController extends HttpServlet {
 
             }
             req.setAttribute(SystemConstant.MODEL, newsModel);
-            req.setAttribute("categories", categoryService.findAll());
+            List<CategoryModel> categories = categoryService.findAll();
+            System.out.println("Categories loaded: " + categories.size()); // Debugging
+
+            req.setAttribute("categories", categories);
             view = "/views/admin/new/edit.jsp";
 
         } else if (newsModel.getType().equals(SystemConstant.DELETE)) {
@@ -99,17 +104,18 @@ public class NewsController extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
         NewsModel newsModel = FormUtils.toModel(NewsModel.class, req);
-
+        String idStr = req.getParameter("id");
         if (SystemConstant.EDIT.equals(newsModel.getType())) {
+            newsModel= iNewsService.findOne(Long.parseLong(idStr));
             iNewsService.update(newsModel);
-            resp.sendRedirect(req.getContextPath() + "/admin-new?type=LIST");
+            resp.sendRedirect(req.getContextPath() + "/admin-new?type=EDIT&id="+idStr);
         } else if (SystemConstant.DELETE.equals(newsModel.getType())) {
             long id = newsModel.getId();
             iNewsService.delete(new long[]{id});
-            resp.sendRedirect(req.getContextPath() + "/admin-new?type=LIST");
+            resp.sendRedirect(req.getContextPath() + "/admin-new?type=delete");
         } else {
             iNewsService.save(newsModel);
-            resp.sendRedirect(req.getContextPath() + "/admin-new?type=LIST");
+            resp.sendRedirect(req.getContextPath() + "/admin-new?type=add");
         }
     }
 }

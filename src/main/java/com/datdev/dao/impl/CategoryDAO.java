@@ -19,7 +19,7 @@ public class CategoryDAO  extends AbstractDAO implements ICategoryDAO {
 	public List<CategoryModel> findAll() {
 		// TODO Auto-generated method stub
 
-		String sql = "SELECT  * FROM CATEGORY ";
+		String sql = "SELECT  * FROM category ";
 		return query(sql, new CategoryMapper());
 	}
 
