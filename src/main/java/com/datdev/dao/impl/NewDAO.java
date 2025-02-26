@@ -115,12 +115,12 @@ public class NewDAO extends AbstractDAO implements INewDAO {
 //        sql.append(" content = ?, categoryid = ?");
 //        sql.append("  WHERE id = ?");
 //        update(sql.toString(), newsModel.getTitle(), newsModel.getContent(),newsModel.getCategoryid() , newsModel.getId());
+        updateNew.setId(updateNew.getId());
         StringBuilder sql = new StringBuilder("UPDATE news SET title = ?, thumbnail = ?,");
         sql.append(" shortdescription = ?, content = ?, categoryid = ?,");
-        sql.append(" createddate = ?, createdby = ?, modifieddate = ?, modifiedby = ? WHERE id = ?");
+        sql.append(" modifieddate = ?, modifiedby = ? WHERE id = ?");
         update(sql.toString(), updateNew.getTitle(), updateNew.getThumbNail(), updateNew.getShortDescription(),
-                updateNew.getContent(), updateNew.getCategoryid(), updateNew.getCreateDate(),
-                updateNew.getCreateBy(), updateNew.getModifireDate(),
+                updateNew.getContent(), updateNew.getCategoryid(),updateNew.getModifireDate(),
                 updateNew.getModifireBy(), updateNew.getId());
 
 

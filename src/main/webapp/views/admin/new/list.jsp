@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
 <%@include file="/common/taglib.jsp" %>
+<c:url var="APIurl" value="/api-admin-new"/>
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -102,7 +103,8 @@
                                             <td>${item.thumbNail}</td>
                                             <td>2023-10-01</td>
                                             <td>
-                                                <a class="btn btn btn-success" href='<c:url value="/admin-new?type=EDIT"/>' role="button"
+                                                <a class="btn btn btn-success"
+                                                   href='<c:url value="/admin-new?type=add"/>' role="button"
                                                    title="add"><i class="fas fa-add"></i></a>
                                                 <c:url var="editURL" value="/admin-new">
                                                     <c:param name="type" value="EDIT"/>
@@ -111,11 +113,7 @@
                                                 <a class="btn btn-warning" href="${editURL}" role="button" title="edit">
                                                     <i class="fas fa-edit"></i>
                                                 </a>
-                                                <c:url var="deleteURL" value="/admin-new">
-                                                    <c:param name="type" value="delete"/>
-                                                    <c:param name="id" value="${item.id}"/>
-                                                </c:url>
-                                                <a class="btn btn-danger" href="${deleteURL}" role="button"
+                                                <a class="btn btn-danger" href="" role="button"
                                                    title="remove"><i class="fas fa-remove"></i></a>
                                             </td>
                                         </tr>

@@ -1,10 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@include file="/common/taglib.jsp" %>
-<c:url var="APIurl " value="/api-admin-new"></c:url>
+<c:url var="APIurl" value="/api-admin-new"/>
 <!DOCTYPE html>
 <html lang="vi">
 <head>
     <%@include file="/common/admin/header.jsp" %>
+    <script>
+        var APIurl = "<c:url value='/api-admin-new'/>";
+    </script>
     <style>
         input, textarea, select {
             width: 100%;
@@ -67,121 +70,80 @@
                         </option>
                     </c:forEach>
                 </select>
-                <input type="hidden" id="id" name="id" value="${model.id}">
-                <input type="text" id="title" name="title" value="${model != null ? model.title : ''}">
-                <input type="text" id="shortDescription" name="shortDescription" value="${model.shortDescription}">
-                <input type="text" id="content" name="content" value="${model.content}">
-                <input type="text" id="thumbNail" name="thumbNail" value="${model.thumbNail}">
                 <c:if test="${not empty model.id}">
-                    <button id="btnUpdateOrAdd" type="submit" class="btn btn-save">update</button>
+                    <input type="hidden" id="id" name="id" value="${model.id}">
                 </c:if>
-                <c:if test="${empty model.id}">
-                    <button id="btnUpdateOrAdd" type="submit" class="btn btn-save">add</button>
-                </c:if>
-
+                <input type="text" id="title" name="title" value="${model != null ? model.title : ''}">
+                <input type="text" id="thumbNail" name="thumbNail" value="${model != null ? model.thumbNail : ''}">
+                <input type="text" id="shortDescription" name="shortDescription" value="${model != null ? model.shortDescription : ''}">
+                <input type="text" id="content" name="content" value="${model != null ? model.content : ''}">
+                <button id="btnUpdateOrAdd" type="submit" class="btn btn-save">
+                    ${not empty model.id ? 'Cập nhật' : 'Thêm mới'}
+                </button>
             </form>
         </div>
     </div>
 </div>
 
+<%@include file="/common/admin/footer.jsp" %>
 <script>
-    <%--document.getElementById("editForm").addEventListener("submit", function (event) {--%>
-    <%--    event.preventDefault(); // Prevent the default form submission--%>
-    <%--    var id = document.getElementById("id").value;--%>
-    <%--    if (!id) {--%>
-    <%--        alert("Error: Missing ID for the post.");--%>
-    <%--        return;--%>
-    <%--    }--%>
+    $(document).ready(function () {
+        $('#editForm').submit(function (event) {
+            event.preventDefault();
+            var data = {};
+            var formData = $(this).serializeArray();
+            $.each(formData, function (idx, vl) {
+                if (vl.name !== "_method") {  // ⚠️ Loại bỏ trường `_method`
+                    data[vl.name] = vl.value;
+                }
+            });
 
-    <%--    // Gather the form data--%>
-    <%--    var formData = new FormData(this);--%>
-
-    <%--    // Validate form inputs (Example: check if any required field is empty)--%>
-    <%--    for (var [key, value] of formData.entries()) {--%>
-    <%--        if (!value) {--%>
-    <%--            alert('Please fill in all fields');--%>
-    <%--            return; // Stop submission if any field is empty--%>
-    <%--        }--%>
-    <%--    }--%>
-
-    <%--    // Send data via AJAX--%>
-    <%--    var xhr = new XMLHttpRequest();--%>
-    <%--    xhr.open("POST", "<c:url value='/admin-new?type=EDIT'/>", true); // Replace with correct URL for edit action--%>
-
-    <%--    xhr.setRequestHeader("Content-Type", "application/json");--%>
-
-    <%--    // Add type=EDIT to specify the type of request for the backend--%>
-    <%--    formData.append("type", "EDIT");--%>
-    <%--    formData.append("id",id);--%>
-
-    <%--    // Handle the response from the server--%>
-    <%--    xhr.onload = function () {--%>
-    <%--        if (xhr.status === 200) {--%>
-    <%--            var response = JSON.parse(xhr.responseText);--%>
-    <%--            if (response.status === "success") {--%>
-    <%--                alert("✅ Post updated successfully!");--%>
-    <%--                window.location.href = "<c:url value='/admin-new'/>"; // Redirect to the list or another page--%>
-    <%--            } else {--%>
-    <%--                alert("❌ Error updating post: " + response.message);--%>
-    <%--            }--%>
-    <%--        } else {--%>
-    <%--            alert("❌ Something went wrong. Please try again later.");--%>
-    <%--        }--%>
-    <%--    };--%>
-
-    <%--    // Send the data to the server--%>
-    <%--    xhr.send(new URLSearchParams(formData).toString());--%>
-    <%--});--%>
-
-    $('#btnUpdateOrAdd').click(function (f)
-    {
-        f.preventDefault();
-        var data = {};
-        var  formData = $('editForm').serializeArray();
-        $.each(formData, function (idx,vl) {
-            data[""+vl.name+""] = vl.value;
+            var id = $('#id').val();
+            if (id) {
+                updatePost(data);
+            } else {
+                addPost(data);
+            }
         });
-        var id = $('id').val();
-        if (id =="")
-        {
-            addNew(data);
-        }else {
-            updateNew(data);
+
+        function addPost(data) {
+            $.ajax({
+                url: APIurl,
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(data),
+                dataType: 'json',
+                success: function (result) {
+                    alert("✅ Thêm mới thành công!");
+                    window.location.reload();
+                },
+                error: function (xhr) {
+                    alert("❌ Lỗi: " + xhr.responseText);
+
+                }
+            });
         }
 
+        function updatePost(data) {
+            $.ajax({
+                url: APIurl,
+                type: 'PUT', // Nếu backend không hỗ trợ PUT, dùng POST và thêm _method=PUT
+                contentType: 'application/json',
+                data: JSON.stringify(data),
+                dataType: 'json',
+                success: function (result) {
+                    alert("✅ Cập nhật thành công!");
+                    window.location.reload();
+                },
+                error: function (xhr) {
+                    alert("❌ Lỗi: " + xhr.responseText);
+                    // console.log(" error " + xhr.responseText);
+                }
+            });
+        }
     });
-    function addNew(data){
-        $.ajax({
-            url: '${APIurl }',
-            type: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify(data),
-            dataType: 'json',
-            success: function (result) {
-
-            },
-            error: function (error) {
-
-            }
-        });
-    }
-    function updateNew(data){
-        $.ajax({
-            url: '${APIurl }',
-            type: 'PUT',
-            contentType: 'application/json',
-            data: JSON.stringify(data),
-            dataType: 'json',
-            success: function (result) {
-
-            },
-            error: function (error) {
-
-            }
-        });
-    }
 </script>
 
-<%@include file="/common/admin/footer.jsp" %>
+
 </body>
 </html>

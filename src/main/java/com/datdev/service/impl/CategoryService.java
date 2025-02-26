@@ -32,4 +32,9 @@ public class CategoryService implements ICategoryService {
 
         return categoryModel;
     }
+
+    @Override
+    public CategoryModel findOneByCategoryCode(String categoryCode) {
+        return null;
+    }
 }

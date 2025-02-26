@@ -44,6 +44,7 @@ public class NewApiAdmin extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         response.setContentType("application/json");
         NewsModel updateNews = HttpUtils.Of(request.getReader()).toModel(NewsModel.class);
+        updateNews.setModifireBy( ((UserModel) SessionUtil.getInstance().getValue(request,"USERMODEL")).getUserName());
         updateNews = iNewsService.update(updateNews);
 
         objectMapper.writeValue(response.getOutputStream(),updateNews);

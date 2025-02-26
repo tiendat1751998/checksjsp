@@ -30,4 +30,11 @@ public class CategoryDAO  extends AbstractDAO implements ICategoryDAO {
 		return news.isEmpty() ? null : news.get(0);
 	}
 
+	@Override
+	public CategoryModel findOneByCode(String categoryCode) {
+		String sql = "SELECT  * FROM  category WHERE code =?";
+		List<CategoryModel>  news = query(sql, new CategoryMapper(), categoryCode);
+		return news.isEmpty() ? null : news.get(0);
+	}
+
 }

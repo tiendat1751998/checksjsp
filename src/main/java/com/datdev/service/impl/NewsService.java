@@ -32,10 +32,11 @@ public class NewsService implements INewsService {
     @Override
     public NewsModel save(NewsModel newsModel) {
         newsModel.setCreateDate(new Timestamp(System.currentTimeMillis()));
-        CategoryModel categoryModel = iCategoryDAO.findOne(Long.valueOf(newsModel.getCategoryCode()));
-
+        CategoryModel categoryModel = iCategoryDAO.findOneByCode(newsModel.getCategoryCode());
+        newsModel.setCategoryid(categoryModel.getId());
         Long newid = iNewDAO.save(newsModel);
-        return iNewDAO.findOne(newid);
+//        return iNewDAO.findOne(newid);
+        return  newsModel;
     }
 
     @Override
@@ -51,12 +52,15 @@ public class NewsService implements INewsService {
 
         newsModel.setCreateDate(oldNews.getCreateDate());
         newsModel.setCreateBy(oldNews.getCreateBy());
-        newsModel.setModifireBy(""); // Consider setting to the current user instead of an empty string
+//        newsModel.setModifireBy(""); // Consider setting to the current user instead of an empty string
         newsModel.setModifireDate(new Timestamp(System.currentTimeMillis()));
-
+        CategoryModel categoryModel = iCategoryDAO.findOneByCode(newsModel.getCategoryCode());
+        newsModel.setCategoryid(categoryModel.getId());
         iNewDAO.update(newsModel);
-        return iNewDAO.findOne(newsModel.getId());
+//        return iNewDAO.findOne(newsModel.getId());
+        return  newsModel;
     }
+
 
     @Override
     public void delete(long[] ids) {
