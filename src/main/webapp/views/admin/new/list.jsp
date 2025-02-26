@@ -101,11 +101,8 @@
                                             <td>${item.shortDescription}</td>
                                             <td>${item.thumbNail}</td>
                                             <td>2023-10-01</td>
-                                            <td><c:url var="addURL" value="/admin-new">
-                                                <c:param name="type" value="add"/>
-                                            </c:url>
-
-                                                <a class="btn btn btn-success" href="${addURL}" role="button"
+                                            <td>
+                                                <a class="btn btn btn-success" href='<c:url value="/admin-new?type=EDIT"/>' role="button"
                                                    title="add"><i class="fas fa-add"></i></a>
                                                 <c:url var="editURL" value="/admin-new">
                                                     <c:param name="type" value="EDIT"/>

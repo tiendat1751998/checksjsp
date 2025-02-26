@@ -32,7 +32,7 @@ public class NewsService implements INewsService {
     @Override
     public NewsModel save(NewsModel newsModel) {
         newsModel.setCreateDate(new Timestamp(System.currentTimeMillis()));
-
+        CategoryModel categoryModel = iCategoryDAO.findOne(Long.valueOf(newsModel.getCategoryCode()));
 
         Long newid = iNewDAO.save(newsModel);
         return iNewDAO.findOne(newid);

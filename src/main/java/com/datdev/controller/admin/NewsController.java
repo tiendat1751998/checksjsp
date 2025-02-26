@@ -64,7 +64,7 @@ public class NewsController extends HttpServlet {
         } else if (newsModel.getType().equals(SystemConstant.EDIT)) {
 //            newsModel.setCategoryid(Long.parseLong(req.getParameter("")));
 
-            newsModel.setId(Long.parseLong(req.getParameter("id")));
+//            newsModel.setId(Long.parseLong(req.getParameter("id")));
             if (newsModel.getId() != null) {
                 // Make sure this returns a non-null object
                 newsModel = iNewsService.findOne(newsModel.getId());
