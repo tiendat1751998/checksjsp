@@ -10,5 +10,6 @@
 <link href="<c:url value='/template/css/styles.css'/>" rel="stylesheet" type="text/css"/>
 <link href="<c:url value='/template/css/stylesAdmin.css'/>" rel="stylesheet" type="text/css"/>
 <link href="<c:url value='/template/css/login.css'/>" rel="stylesheet" type="text/css"/>
+<script src="<c:url value='/template/ckeditor/ckeditor.js'/>"></script>
 
 
