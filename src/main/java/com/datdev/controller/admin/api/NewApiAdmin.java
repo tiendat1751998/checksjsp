@@ -36,7 +36,7 @@ public class NewApiAdmin extends HttpServlet {
 
         System.out.println(newsModel);
 
-        doPost(request,response);
+//        doPost(request,response);
     }
     protected void  doPut(HttpServletRequest request , HttpServletResponse response)
             throws ServletException, IOException {
@@ -49,7 +49,7 @@ public class NewApiAdmin extends HttpServlet {
 
         objectMapper.writeValue(response.getOutputStream(),updateNews);
 
-        doPut(request,response);
+//        doPut(request,response);
     }
     protected void  doDelete(HttpServletRequest request , HttpServletResponse response)
             throws ServletException, IOException {
@@ -61,6 +61,6 @@ public class NewApiAdmin extends HttpServlet {
        iNewsService.delete(deleteNews.getIds());
 
         objectMapper.writeValue(response.getOutputStream(),deleteNews);
-        doDelete(request,response);
+//        doDelete(request,response);
     }
 }

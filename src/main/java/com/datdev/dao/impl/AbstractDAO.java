@@ -31,7 +31,7 @@ public class AbstractDAO<T> implements IGenericDAO<T> {
     public Connection getConnection() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            String url = "jdbc:mysql://10.10.10.14:3306/test";
+            String url = "jdbc:mysql://10.10.10.10:3306/test";
             String user = "root";
             String password ="123123";
             return DriverManager.getConnection(url, user, password);

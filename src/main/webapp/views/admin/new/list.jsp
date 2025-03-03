@@ -6,6 +6,9 @@
 <html lang="vi">
 <head>
     <%@include file="/common/admin/header.jsp" %>
+    <script>
+        var APIurl = "<c:url value='/api-admin-new'/>";
+    </script>
 </head>
 <body>
 <!-- Toggle Sidebar Button -->
@@ -85,9 +88,17 @@
                                 <h5 class="card-title">Recent Orders</h5>
                             </div>
                             <div class="card-body">
+                                <div>
+                                    <a class="btn btn btn-success"
+                                       href='<c:url value="/admin-new?type=add"/>' role="button"
+                                       title="add"><i class="fas fa-add"></i></a>
+                                    <a class="btn btn-danger"  id="btnDelete" href="" role="button"
+                                       title="remove"><i class="fas fa-remove"></i></a>
+                                </div>
                                 <table class="table table-striped table-hover">
                                     <thead>
                                     <tr>
+                                        <th><input type="checkbox" id="checkAll"></th>
                                         <th>Tên Bài Viết</th>
                                         <th>mô tả ngắn</th>
                                         <th>Product</th>
@@ -98,14 +109,13 @@
                                     <tbody>
                                     <c:forEach var="item" items="${model.listResult}">
                                         <tr>
+                                            <td><input type="checkbox" id="checkbox_${item.id}" value="${item.id}"></td>
                                             <td>${item.title}</td>
                                             <td>${item.shortDescription}</td>
                                             <td>${item.thumbNail}</td>
                                             <td>2023-10-01</td>
                                             <td>
-                                                <a class="btn btn btn-success"
-                                                   href='<c:url value="/admin-new?type=add"/>' role="button"
-                                                   title="add"><i class="fas fa-add"></i></a>
+
                                                 <c:url var="editURL" value="/admin-new">
                                                     <c:param name="type" value="EDIT"/>
                                                     <c:param name="id" value="${item.id}"/>
@@ -113,8 +123,7 @@
                                                 <a class="btn btn-warning" href="${editURL}" role="button" title="edit">
                                                     <i class="fas fa-edit"></i>
                                                 </a>
-                                                <a class="btn btn-danger" href="" role="button"
-                                                   title="remove"><i class="fas fa-remove"></i></a>
+
                                             </td>
                                         </tr>
                                     </c:forEach>
@@ -192,6 +201,36 @@
             });
         });
     });
+    $("#btnDelete").click(function (){
+        var data={};
+        var ids = $('tbody input[type=checkbox]:checked').map(function ()
+        {
+            return $(this).val()
+        }).get();
+        data['ids'] =  ids;
+        deleteNew(data);
+    });
+
+    function deleteNew(data) {
+        var id = $('#id').val();
+        $.ajax({
+            url: APIurl,
+            type: 'DELETE',
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            dataType: 'json',
+            success: function (result) {
+                alert("✅ đã xóa  id = "+ id);
+                window.location.reload();
+                window.location.href = "<c:url value='/admin-new?page=1&maxPageItem=5&sortName=title&sortBy=desc&type=LIST'/>";
+
+            },
+            error: function (xhr) {
+                alert("❌ Lỗi: " + xhr.responseText);
+
+            }
+        });
+    }
 
 
 </script>

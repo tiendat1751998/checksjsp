@@ -5,6 +5,7 @@
 <html lang="vi">
 <head>
     <%@include file="/common/admin/header.jsp" %>
+
     <script>
         var APIurl = "<c:url value='/api-admin-new'/>";
     </script>
@@ -53,6 +54,10 @@
         .btn:hover {
             opacity: 0.8;
         }
+        label {
+            color: white;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -62,6 +67,8 @@
         <div class="col-md-10 main-content">
             <form id="editForm">
                 <h2>✏️ Edit Post</h2>
+
+                <label for="categoryCode">Category</label>
                 <select id="categoryCode" name="categoryCode">
                     <option value="">Select Category</option>
                     <c:forEach var="item" items="${categories}">
@@ -70,23 +77,38 @@
                         </option>
                     </c:forEach>
                 </select>
+
                 <c:if test="${not empty model.id}">
                     <input type="hidden" id="id" name="id" value="${model.id}">
                 </c:if>
+
+                <label for="title">Title</label>
                 <input type="text" id="title" name="title" value="${model != null ? model.title : ''}">
+
+                <label for="thumbNail">Thumbnail</label>
                 <input type="text" id="thumbNail" name="thumbNail" value="${model != null ? model.thumbNail : ''}">
+
+                <label for="shortDescription">Short Description</label>
                 <input type="text" id="shortDescription" name="shortDescription" value="${model != null ? model.shortDescription : ''}">
-                <input type="text" id="content" name="content" value="${model != null ? model.content : ''}">
+
+                <label for="content">Content</label>
+                <textarea id="content" name="content">${model != null ? model.content : ''}</textarea>
+
                 <button id="btnUpdateOrAdd" type="submit" class="btn btn-save">
                     ${not empty model.id ? 'Cập nhật' : 'Thêm mới'}
                 </button>
             </form>
+
         </div>
     </div>
 </div>
 
 <%@include file="/common/admin/footer.jsp" %>
 <script>
+    var editor ='';
+    $(document).ready(function (){
+        editor = CKEDITOR.replace('content');
+    });
     $(document).ready(function () {
         $('#editForm').submit(function (event) {
             event.preventDefault();
@@ -116,6 +138,8 @@
                 success: function (result) {
                     alert("✅ Thêm mới thành công!");
                     window.location.reload();
+                    window.location.href = "<c:url value='/admin-new?page=1&maxPageItem=5&sortName=title&sortBy=desc&type=LIST'/>";
+
                 },
                 error: function (xhr) {
                     alert("❌ Lỗi: " + xhr.responseText);
@@ -134,6 +158,7 @@
                 success: function (result) {
                     alert("✅ Cập nhật thành công!");
                     window.location.reload();
+                    window.location.href = "<c:url value='/admin-new?page=1&maxPageItem=5&sortName=title&sortBy=desc&type=LIST'/>";
                 },
                 error: function (xhr) {
                     alert("❌ Lỗi: " + xhr.responseText);
