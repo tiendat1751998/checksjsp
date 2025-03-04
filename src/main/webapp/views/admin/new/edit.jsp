@@ -55,7 +55,7 @@
             opacity: 0.8;
         }
         label {
-            color: white;
+            color: black;
             font-weight: bold;
         }
     </style>
@@ -65,6 +65,11 @@
     <div class="row">
         <%@include file="/common/admin/menu.jsp" %>
         <div class="col-md-10 main-content">
+            <c:if test="${not empty messageResponse}">
+                <div class="alert alert-${alert}" role="alert">
+                        ${messageResponse}
+                </div>
+            </c:if>
             <form id="editForm">
                 <h2>✏️ Edit Post</h2>
 
@@ -105,10 +110,18 @@
 
 <%@include file="/common/admin/footer.jsp" %>
 <script>
-    var editor ='';
-    $(document).ready(function (){
-        editor = CKEDITOR.replace('content');
+    // var editor ='';
+    // $(document).ready(function (){
+    //     editor = CKEDITOR.replace('content');
+    // });
+    document.addEventListener("DOMContentLoaded", function() {
+        if (typeof CKEDITOR !== "undefined") {
+            CKEDITOR.replace('content');
+        } else {
+            console.error("CKEditor not found!");
+        }
     });
+
     $(document).ready(function () {
         $('#editForm').submit(function (event) {
             event.preventDefault();
@@ -136,7 +149,7 @@
                 data: JSON.stringify(data),
                 dataType: 'json',
                 success: function (result) {
-                    alert("✅ Thêm mới thành công!");
+                    alert("✅ Thêm mới thành công!" + result.id);
                     window.location.reload();
                     window.location.href = "<c:url value='/admin-new?page=1&maxPageItem=5&sortName=title&sortBy=desc&type=LIST'/>";
 

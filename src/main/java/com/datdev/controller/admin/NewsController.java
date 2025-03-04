@@ -9,6 +9,7 @@ import com.datdev.service.ICategoryService;
 import com.datdev.service.INewsService;
 import com.datdev.sort.Sorter;
 import com.datdev.utils.FormUtils;
+import com.datdev.utils.MessageUtil;
 
 import javax.inject.Inject;
 import javax.servlet.RequestDispatcher;
@@ -66,7 +67,7 @@ public class NewsController extends HttpServlet {
             req.setAttribute(SystemConstant.MODEL, newsModel);
             List<CategoryModel> categories = categoryService.findAll();
             req.setAttribute("categories", categories);
-            view = "/views/admin/new/edit.jsp";
+            view = "/views/admin/new/edit.jsp";y
         } else if (SystemConstant.ADD.equals(newsModel.getType())) {
             req.setAttribute(SystemConstant.MODEL, newsModel);
             List<CategoryModel> categories = categoryService.findAll();
@@ -74,8 +75,7 @@ public class NewsController extends HttpServlet {
             view = "/views/admin/new/edit.jsp";
 
         }
-
-
+        MessageUtil.showMessage(req);
         req.setAttribute(SystemConstant.MODEL, newsModel);
         RequestDispatcher requestDispatcher = req.getRequestDispatcher(view);
         requestDispatcher.forward(req, resp);

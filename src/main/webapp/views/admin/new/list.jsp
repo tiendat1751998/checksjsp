@@ -22,6 +22,11 @@
         <%@include file="/common/admin/menu.jsp" %>
         <!-- Main Content -->
         <div class="col-md-10 main-content" id="mainContent">
+            <c:if test="${not empty messageResponse}">
+                <div class="alert alert-${alert}" role="alert">
+                        ${messageResponse}
+                </div>
+            </c:if>
             <!-- Navbar -->
             <form action="<c:url value='/admin-new'/>" id="formSubmit" method="get">
                 <nav class="navbar navbar-expand-lg navbar-custom">
@@ -220,7 +225,7 @@
             data: JSON.stringify(data),
             dataType: 'json',
             success: function (result) {
-                alert("✅ đã xóa  id = "+ id);
+                alert("✅ đã xóa  id = "+ result.id);
                 window.location.reload();
                 window.location.href = "<c:url value='/admin-new?page=1&maxPageItem=5&sortName=title&sortBy=desc&type=LIST'/>";
 
