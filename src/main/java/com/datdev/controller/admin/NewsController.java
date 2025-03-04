@@ -67,7 +67,7 @@ public class NewsController extends HttpServlet {
             req.setAttribute(SystemConstant.MODEL, newsModel);
             List<CategoryModel> categories = categoryService.findAll();
             req.setAttribute("categories", categories);
-            view = "/views/admin/new/edit.jsp";y
+            view = "/views/admin/new/edit.jsp";
         } else if (SystemConstant.ADD.equals(newsModel.getType())) {
             req.setAttribute(SystemConstant.MODEL, newsModel);
             List<CategoryModel> categories = categoryService.findAll();
