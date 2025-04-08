@@ -9,5 +9,5 @@ public interface ICategoryService {
 
     CategoryModel findOne(Long id);
 
-    CategoryModel findOneByCategoryCode(Long categoryCode);
+    CategoryModel findOneByCategoryCode(String categoryCode);
 }
